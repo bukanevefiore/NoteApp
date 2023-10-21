@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "327054477850",
+    "project_id": "composenoteapp",
+    "storage_bucket": "composenoteapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327054477850:android:dc88c528b33eee9fe71fa3",
+        "android_client_info": {
+          "package_name": "com.example.notes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDxeoq9gDj8Utd80kBhuaJ-ToQ6UhbAsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
