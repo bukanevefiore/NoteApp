@@ -6,7 +6,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +15,7 @@ const val NOTES_COLLECTION_REF = "notes"
 
 class StorageRepository() {
 
-    val user = Firebase.auth.currentUser
+    fun user() = Firebase.auth.currentUser
     fun hasUser():Boolean = Firebase.auth.currentUser != null
 
     fun getUserId():String = Firebase.auth.currentUser?.uid.orEmpty()
@@ -33,15 +32,15 @@ class StorageRepository() {
                 .whereEqualTo("userId", userId).addSnapshotListener { value, error ->
                     val response = if(value != null){
                         val notes = value.toObjects(Notes::class.java)
-                        Resources.success(data = notes)
+                        Resources.Success(data = notes)
                     }else{
-                        Resources.error(throwable = error?.cause)
+                        Resources.Error(throwable = error?.cause)
                     }
                     trySend(response)
                 }
 
         }catch (e:Exception){
-            trySend(Resources.error(e?.cause))
+            trySend(Resources.Error(e?.cause))
             e.printStackTrace()
         }
 
@@ -104,6 +103,8 @@ class StorageRepository() {
         }
     }
 
+    fun signOut() = Firebase.auth.signOut()
+
 
 
 }
@@ -112,7 +113,7 @@ sealed class Resources<T>(
     val data: T? = null,
     val throwable: Throwable?? = null,
 ){
-    class loading<T>:Resources<T>()
-    class success<T>(data: T?):Resources<T>(data= data)
-    class error<T>(throwable: Throwable?):Resources<T>(throwable = throwable)
+    class Loading<T>:Resources<T>()
+    class Success<T>(data: T?):Resources<T>(data= data)
+    class Error<T>(throwable: Throwable?):Resources<T>(throwable = throwable)
 }

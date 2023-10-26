@@ -18,7 +18,7 @@ class DetailViewModel(
         private set
 
     private val hasUser:Boolean get() = repository.hasUser()
-    private val user:FirebaseUser? get() = repository.user
+    private val user:FirebaseUser? get() = repository.user()
 
     fun onColorChange(colorIndex:Int){
         detailUiState = detailUiState.copy(colorIndex = colorIndex)
