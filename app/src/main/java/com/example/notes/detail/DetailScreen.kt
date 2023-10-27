@@ -1,5 +1,7 @@
 package com.example.notes.detail
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -39,6 +41,7 @@ import com.example.notes.models.Notes
 import com.example.notes.ui.theme.NotesTheme
 import com.example.notes.utils.NoteColors
 import kotlinx.coroutines.launch
+import java.io.Console
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,16 +52,16 @@ fun DetailScreen(
 ){
     val detailUiState = detailViewModel?.detailUiState ?: DetailUiState()
 
-    val isFormNotBlank = detailUiState.note.isNotBlank() &&
-            detailUiState.title.isNotBlank()
+    val isFormNotBlank = detailUiState.note.isNotBlank() && detailUiState.title.isNotBlank()
+
     
     val selectedColor by animateColorAsState(targetValue = NoteColors.colors[detailUiState.colorIndex],
         label = ""
     )
 
     val isNoteIdNotBlank = noteId.isNotBlank()
-    val icon = if(isFormNotBlank) Icons.Default.Refresh
-               else Icons.Default.Check
+    val icon = if(isNoteIdNotBlank) Icons.Default.Refresh
+    else Icons.Default.Check
 
     LaunchedEffect(key1 = Unit){
         if(isNoteIdNotBlank){
@@ -71,20 +74,23 @@ fun DetailScreen(
 
     val scaffoldState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    Log.d("FORM", isFormNotBlank.toString())
 
     Scaffold(
         snackbarHost = { SnackbarHost(scaffoldState)},
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    if (isNoteIdNotBlank) {
-                        detailViewModel?.updateNote(noteId)
-                    }else{
-                        detailViewModel?.addNote()
+            AnimatedVisibility(visible = isFormNotBlank) {
+                FloatingActionButton(
+                    onClick = {
+                        if (isNoteIdNotBlank) {
+                            detailViewModel?.updateNote(noteId)
+                        }else{
+                            detailViewModel?.addNote()
+                        }
                     }
-                }
-            ) {
+                ) {
                     Icon(imageVector = icon, contentDescription = null)
+                }
             }
         },
     ) { padding ->

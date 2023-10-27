@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val repository: StorageRepository
+    private val repository: StorageRepository = StorageRepository()
 ):ViewModel() {
     var homeUiState by mutableStateOf(HomeUiState())
 
