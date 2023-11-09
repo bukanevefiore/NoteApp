@@ -27,8 +27,13 @@ class DetailViewModel @AssistedInject constructor(
         get() = state.title.isNotEmpty() && state.content.isNotEmpty()
     private val note:Note
         get() = state.run {
-            Note(id, title, content, createdDate)
+            Note(id = id, title = title, content = content, createdDate = createdDate, isBookMarked = isBookmark)
         }
+
+    init {
+        initialize()
+    }
+
     private fun initialize(){
         val isUpdatingNote = noteId != -1L
         state = state.copy(isUpdatingNote = isUpdatingNote)

@@ -49,7 +49,7 @@ fun DetailScreen(
         content = state.content,
         isBookMark = state.isBookmark,
         onBookmarkChange = viewModel::onBookmarkChange,
-        isFormNotBlank = state.isUpdatingNote,
+        isFormNotBlank = viewModel.isFormNotBlank,
         onTitleChange = viewModel::onTitleChange,
         onContentChange = viewModel::onContentChange,
         onBtnClick = {
@@ -91,7 +91,7 @@ private fun DetailScreen(
                     .padding(12.dp),
                 horizontalArrangement = Arrangement.End
             ) {
-                IconButton(onClick = { onBtnClick }) {
+                IconButton(onClick =  onBtnClick ) {
                     val icon = if(isUpdatingNote) Icons.Default.Update
                     else Icons.Default.Check
                     Icon(imageVector = icon, contentDescription = null)
@@ -122,30 +122,30 @@ fun TopSection(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { onNavigate }) {
+        IconButton(onClick =  onNavigate ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = null
             )
-            NotesTextField(
-                modifier = modifier.weight(1f),
-                value = title,
-                onValueChange = onTitleChange,
-                label = "Title",
-                labelAlign = TextAlign.Center,
-            )
-            IconButton(onClick = { onBookmarkChange(!isBookMark) }) {
-                val icon = if(isBookMark) Icons.Default.BookmarkRemove
-                else Icons.Outlined.BookmarkAdd
-                Icon(imageVector = icon, contentDescription = null)
-            }
+        }
+        NotesTextField(
+            modifier = modifier.weight(1f),
+            value = title,
+            onValueChange = onTitleChange,
+            label = "Title",
+            labelAlign = TextAlign.Center,
+        )
+        IconButton(onClick = { onBookmarkChange(!isBookMark) }) {
+            val icon = if(isBookMark) Icons.Default.BookmarkRemove
+            else Icons.Outlined.BookmarkAdd
+            Icon(imageVector = icon, contentDescription = null)
         }
     }
 }
 
 @Composable
 private fun NotesTextField(
-    modifier: Modifier = Modifier,
+    modifier: Modifier ,
     value: String,
     onValueChange:(String) -> Unit,
     label: String,
